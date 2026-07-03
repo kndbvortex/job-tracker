@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { SecondaryGrowButton } from "@/components/ui/grow-button"
 
 import { signOut } from "@/app/auth/actions"
 import { useLocale } from "@/components/locale-provider"
@@ -10,9 +10,9 @@ export function SignOutButton() {
 
   return (
     <form action={signOut}>
-      <Button type="submit" variant="outline" size="sm">
+      <SecondaryGrowButton type="submit" size="sm" className="w-full">
         {dictionary.nav.signOut}
-      </Button>
+      </SecondaryGrowButton>
     </form>
   )
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { Button } from "@/components/ui/button"
+import { PrimaryGrowButton } from "@/components/ui/grow-button"
 import { Google2025Icon } from "@/components/icons/google-2025-icon"
 
 import { useLocale } from "@/components/locale-provider"
@@ -35,9 +35,9 @@ export function GoogleAuthButton() {
   }
 
   return (
-    <Button type="button" variant="outline" className="w-full" disabled={pending} onClick={handleClick}>
+    <PrimaryGrowButton type="button" className="w-full" disabled={pending} onClick={handleClick}>
       <Google2025Icon className="size-4" data-icon="inline-start" />
       {pending ? "..." : dictionary.auth.continueWithGoogle}
-    </Button>
+    </PrimaryGrowButton>
   )
 }

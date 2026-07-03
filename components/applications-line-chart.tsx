@@ -68,7 +68,7 @@ export function ApplicationsLineChart({ dates, from, to }: { dates: Date[]; from
   const chartConfig = {
     count: {
       label: d.applications,
-      color: "#2a78d6",
+      color: "#4AAFFD",
     },
   } satisfies ChartConfig
 

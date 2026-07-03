@@ -16,12 +16,10 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2 px-2">
-      <div className="flex size-7 items-center justify-center rounded-xl bg-foreground text-background">
-        <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-4" />
-      </div>
-      <span className="text-sm font-medium">Job Tracker</span>
-    </div>
+    <Link href="/" className="flex items-center gap-2 px-2 transition-opacity hover:opacity-75">
+      <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-5 text-[#4AAFFD]" />
+      <span className="text-sm font-semibold tracking-tight">Job Tracker</span>
+    </Link>
   )
 }
 
@@ -44,7 +42,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             href={link.href}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm transition-colors",
+              "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition-colors",
               active
                 ? "bg-muted font-medium text-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { type Variants, motion } from "motion/react"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -10,21 +11,19 @@ import {
   ChartLineData02Icon,
 } from "@hugeicons/core-free-icons"
 
-import { Button } from "@/components/ui/button"
-import { CaseFileCard } from "@/components/landing/case-file-card"
-import { StageRail } from "@/components/landing/stage-rail"
+import { PrimaryGrowButton, SecondaryGrowButton } from "@/components/ui/grow-button"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import type { Dictionary } from "@/lib/i18n/dictionaries"
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 18 },
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 }
 
-const container: Variants = {
+const stagger: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
 }
 
 export function LandingPage({
@@ -45,147 +44,178 @@ export function LandingPage({
   ]
 
   return (
-    <div className="bg-[#FBF9F3] text-[#1B1B18] dark:bg-background dark:text-foreground">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
-        <motion.div
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <div className="flex size-7 items-center justify-center rounded-full bg-[#1B1B18] text-[#FBF9F3] dark:bg-foreground dark:text-background">
-            <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-4" />
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-[#09090b] dark:text-white">
+
+      {/* ── Header ── */}
+      <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md dark:border-white/10 dark:bg-[#09090b]/90">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-5 text-[#4AAFFD]" />
+            <span className="text-sm font-semibold tracking-tight">Job Tracker</span>
           </div>
-          <span className="font-mono text-sm font-semibold tracking-tight">JOB TRACKER</span>
-        </motion.div>
-        <motion.nav
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <ThemeSwitcher />
-          <LanguageSwitcher />
-          {isAuthenticated ? (
-            <Button
-              className="bg-[#1B1B18] text-[#FBF9F3] hover:bg-[#1B1B18]/80 dark:bg-foreground dark:text-background dark:hover:bg-foreground/80"
-              render={<Link href="/dashboard" />}
-              nativeButton={false}
-            >
-              {nav.goToDashboard}
-            </Button>
-          ) : (
-            <>
-              <Button variant="ghost" render={<Link href="/auth/login" />} nativeButton={false}>
-                {nav.logIn}
-              </Button>
-              <Button
-                className="bg-[#1B1B18] text-[#FBF9F3] hover:bg-[#1B1B18]/80 dark:bg-foreground dark:text-background dark:hover:bg-foreground/80"
-                render={<Link href="/auth/sign-up" />}
-                nativeButton={false}
-              >
-                {nav.signUp}
-              </Button>
-            </>
-          )}
-        </motion.nav>
+          <nav className="flex items-center gap-1.5">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+            {!isAuthenticated && (
+              <>
+                <SecondaryGrowButton size="sm" render={<Link href="/auth/login" />} nativeButton={false}>
+                  {nav.logIn}
+                </SecondaryGrowButton>
+                <PrimaryGrowButton
+                  size="sm"
+                  render={<Link href="/auth/sign-up" />}
+                  nativeButton={false}
+                >
+                  {nav.signUp}
+                </PrimaryGrowButton>
+              </>
+            )}
+          </nav>
+        </div>
       </header>
 
-      <section className="mx-auto grid max-w-5xl gap-12 px-6 pt-10 pb-20 md:grid-cols-2 md:items-center md:pt-16">
+      {/* ── Hero ── */}
+      <section className="px-6 pt-20 pb-10 text-center">
         <motion.div
-          className="flex flex-col gap-6"
-          variants={container}
+          className="mx-auto max-w-2xl"
+          variants={stagger}
           initial="hidden"
           animate="show"
         >
-          <motion.p variants={fadeUp} className="font-mono text-xs tracking-[0.2em] text-[#6B6558] dark:text-muted-foreground">
-            {t.eyebrow}
-          </motion.p>
-          <motion.h1 variants={fadeUp} className="font-mono text-4xl leading-[1.05] font-bold tracking-tight sm:text-5xl">
+          {/* Headline */}
+          <motion.h1
+            variants={fadeUp}
+            className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl"
+          >
             {t.headlineLine1}
             <br />
             {t.headlineLine2}
           </motion.h1>
-          <motion.p variants={fadeUp} className="max-w-md text-base text-[#4A463C] dark:text-muted-foreground">
+
+          {/* Subhead */}
+          <motion.p
+            variants={fadeUp}
+            className="mx-auto mt-5 max-w-lg text-base text-slate-500 dark:text-slate-400"
+          >
             {t.subhead}
           </motion.p>
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
-            <Button
+
+          {/* CTAs */}
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          >
+            <PrimaryGrowButton
               size="lg"
-              className="bg-[#1B1B18] text-[#FBF9F3] hover:bg-[#1B1B18]/80 dark:bg-foreground dark:text-background dark:hover:bg-foreground/80"
               render={<Link href={startHref} />}
               nativeButton={false}
             >
               {t.startCta}
-            </Button>
-          </motion.div>
-          <motion.div variants={fadeUp} className="pt-4">
-            <StageRail labels={t.stages} />
+            </PrimaryGrowButton>
           </motion.div>
         </motion.div>
 
+        {/* Hero image */}
         <motion.div
-          initial={{ opacity: 0, x: 32 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+          className="mx-auto mt-14 max-w-5xl"
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
         >
-          <CaseFileCard />
+          <div className="overflow-hidden rounded-xl border border-slate-200 shadow-2xl shadow-slate-200/60 dark:border-white/10 dark:shadow-none">
+            <Image
+              src="/hero-removebg-preview.png"
+              alt="Job Tracker dashboard"
+              width={1523}
+              height={1032}
+              className="w-full"
+              priority
+            />
+          </div>
         </motion.div>
       </section>
 
-      <section className="border-t border-[#E4E0D3] bg-[#F4F1E8] dark:border-border dark:bg-card">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <div className="grid gap-8 md:grid-cols-3">
+      {/* ── Stats strip ── */}
+      <div className="mt-10 border-y border-slate-100 bg-slate-50 dark:border-white/10 dark:bg-white/[0.02]">
+        <div className="mx-auto grid max-w-5xl grid-cols-3 gap-6 px-6 py-8 text-center">
+          {[
+            { value: t.stat1Value, label: t.stat1Label },
+            { value: t.stat2Value, label: t.stat2Label },
+            { value: t.stat3Value, label: t.stat3Label },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+              <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Features ── */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+              {t.featuresHeadline}
+            </h2>
+            <p className="mt-3 text-slate-500 dark:text-slate-400">{t.featuresSubhead}</p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
             {exhibits.map((exhibit, i) => (
               <motion.div
                 key={exhibit.tag}
-                className="flex flex-col gap-3"
-                initial={{ opacity: 0, y: 20 }}
+                className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]"
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+                transition={{ duration: 0.45, delay: i * 0.08, ease: "easeOut" }}
               >
-                <div className="flex items-center gap-2">
-                  <HugeiconsIcon icon={exhibit.icon} strokeWidth={2} className="size-5 text-[#33415C] dark:text-[#86A6D9]" />
-                  <p className="font-mono text-[11px] tracking-[0.2em] text-[#6B6558] dark:text-muted-foreground">
-                    {exhibit.tag}
-                  </p>
+                <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-[#4AAFFD]/10">
+                  <HugeiconsIcon
+                    icon={exhibit.icon}
+                    strokeWidth={2}
+                    className="size-5 text-[#4AAFFD]"
+                  />
                 </div>
-                <h3 className="text-lg font-medium">{exhibit.title}</h3>
-                <p className="text-sm text-[#4A463C] dark:text-muted-foreground">{exhibit.body}</p>
+                <h3 className="font-semibold text-slate-900 dark:text-white">{exhibit.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{exhibit.body}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#1B1B18] text-[#FBF9F3] dark:bg-[#0a0a08]">
-        <div className="mx-auto flex max-w-5xl flex-col items-start gap-6 px-6 py-20">
-          <motion.h2
-            className="font-mono text-3xl font-bold tracking-tight sm:text-4xl"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
-          >
+      {/* ── CTA section ── */}
+      <section className="px-6 pb-20">
+        <motion.div
+          className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-slate-900 p-12 text-center dark:bg-white/5 dark:ring-1 dark:ring-white/10"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
             {t.ctaHeadline}
-          </motion.h2>
-          <p className="max-w-md text-[#FBF9F3]/70">
+          </h2>
+          <p className="mt-3 text-slate-400">
             {isAuthenticated ? t.ctaSubAuthenticated : t.ctaSubAnonymous}
           </p>
-          <Button
+          <PrimaryGrowButton
             size="lg"
-            className="bg-[#FBF9F3] text-[#1B1B18] hover:bg-[#FBF9F3]/80"
+            className="mt-8"
             render={<Link href={startHref} />}
             nativeButton={false}
           >
             {isAuthenticated ? t.ctaButtonAuthenticated : t.ctaButtonAnonymous}
-          </Button>
-        </div>
+          </PrimaryGrowButton>
+        </motion.div>
       </section>
 
-      <footer className="mx-auto max-w-5xl px-6 py-8 text-xs text-[#6B6558] dark:text-muted-foreground">
-        {t.footer}
+      {/* ── Footer ── */}
+      <footer className="border-t border-slate-100 dark:border-white/10">
+        <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-slate-400 dark:text-slate-500">
+          {t.footer}
+        </div>
       </footer>
     </div>
   )

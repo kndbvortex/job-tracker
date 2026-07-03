@@ -51,8 +51,8 @@ export function DashboardDonutChart({ counts }: { counts: Record<string, number>
     <div
       className={[
         "flex flex-col items-center gap-6 rounded-2xl border border-border p-6 sm:flex-row sm:items-center sm:gap-10",
-        "[--chart-saved:#2a78d6] [--chart-applied:#1baf7a] [--chart-interviewing:#eda100] [--chart-offer:#008300] [--chart-rejected:#e34948]",
-        "dark:[--chart-saved:#3987e5] dark:[--chart-applied:#199e70] dark:[--chart-interviewing:#c98500] dark:[--chart-offer:#008300] dark:[--chart-rejected:#e66767]",
+        "[--chart-saved:#4AAFFD] [--chart-applied:#1baf7a] [--chart-interviewing:#eda100] [--chart-offer:#008300] [--chart-rejected:#e34948]",
+        "dark:[--chart-saved:#4AAFFD] dark:[--chart-applied:#199e70] dark:[--chart-interviewing:#c98500] dark:[--chart-offer:#008300] dark:[--chart-rejected:#e66767]",
       ].join(" ")}
     >
       <div className="relative shrink-0">
