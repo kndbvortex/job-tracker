@@ -12,6 +12,16 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -134,15 +144,39 @@ export function ApplicationsTable({ applications }: { applications: ApplicationR
                     </Button>
                   }
                 />
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  disabled={isPending}
-                  onClick={() => startTransition(() => void deleteApplication(application.id))}
-                >
-                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
-                  <span className="sr-only">Delete</span>
-                </Button>
+                <Dialog>
+                  <DialogTrigger
+                    render={
+                      <Button variant="ghost" size="icon-sm" disabled={isPending} />
+                    }
+                  >
+                    <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
+                    <span className="sr-only">Delete</span>
+                  </DialogTrigger>
+                  <DialogContent showCloseButton={false}>
+                    <DialogHeader>
+                      <DialogTitle>Supprimer cette candidature ?</DialogTitle>
+                      <DialogDescription>
+                        {application.company} — {application.role}. Cette action est irréversible.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose render={<Button variant="outline" />}>
+                        Annuler
+                      </DialogClose>
+                      <DialogClose
+                        render={
+                          <Button
+                            variant="destructive"
+                            onClick={() => startTransition(() => void deleteApplication(application.id))}
+                          />
+                        }
+                      >
+                        Supprimer
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </TableCell>
           </TableRow>

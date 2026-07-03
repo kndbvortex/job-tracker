@@ -11,7 +11,7 @@ import {
   ChartLineData02Icon,
 } from "@hugeicons/core-free-icons"
 
-import { PrimaryGrowButton, SecondaryGrowButton } from "@/components/ui/grow-button"
+import { PrimaryGrowButton } from "@/components/ui/grow-button"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import type { Dictionary } from "@/lib/i18n/dictionaries"
@@ -56,20 +56,6 @@ export function LandingPage({
           <nav className="flex items-center gap-1.5">
             <ThemeSwitcher />
             <LanguageSwitcher />
-            {!isAuthenticated && (
-              <>
-                <SecondaryGrowButton size="sm" render={<Link href="/auth/login" />} nativeButton={false}>
-                  {nav.logIn}
-                </SecondaryGrowButton>
-                <PrimaryGrowButton
-                  size="sm"
-                  render={<Link href="/auth/sign-up" />}
-                  nativeButton={false}
-                >
-                  {nav.signUp}
-                </PrimaryGrowButton>
-              </>
-            )}
           </nav>
         </div>
       </header>
