@@ -11,7 +11,7 @@ import {
   isSameHour,
   isSameMonth,
 } from "date-fns"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { useLocale } from "@/components/locale-provider"
@@ -82,8 +82,9 @@ export function ApplicationsLineChart({ dates, from, to }: { dates: Date[]; from
         <p className="text-xs text-muted-foreground">{byLabel}</p>
       </div>
       <ChartContainer config={chartConfig} className="aspect-auto h-52 w-full">
-        <LineChart data={data} margin={{ left: 12, right: 12 }}>
+        <LineChart data={data} margin={{ left: 12, right: 12, top: 16, bottom: 4 }}>
           <CartesianGrid vertical={false} />
+          <YAxis domain={[0, (max: number) => Math.max(max + 1, Math.ceil(max * 1.25))]} hide />
           <XAxis
             dataKey="label"
             axisLine={false}
@@ -92,7 +93,25 @@ export function ApplicationsLineChart({ dates, from, to }: { dates: Date[]; from
             minTickGap={24}
           />
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-          <Line dataKey="count" type="monotone" stroke="var(--color-count)" strokeWidth={2} dot={false} />
+          <Line
+            dataKey="count"
+            type="monotone"
+            stroke="var(--color-count)"
+            strokeWidth={2}
+            dot={({ cx, cy, index, payload }) =>
+              payload.count > 0 ? (
+                <circle
+                  key={index}
+                  cx={cx}
+                  cy={cy}
+                  r={data.length === 1 ? 5 : 3}
+                  fill="var(--color-count)"
+                  strokeWidth={0}
+                />
+              ) : <g key={index} />
+            }
+            activeDot={{ r: 5, strokeWidth: 0 }}
+          />
         </LineChart>
       </ChartContainer>
     </div>
