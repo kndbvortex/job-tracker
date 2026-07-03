@@ -64,6 +64,11 @@ export const dictionaries = {
     dashboard: {
       applications: "Applications",
       addApplication: "Add application",
+      applicationsOverTime: "Applications over time",
+      byHour: "by hour",
+      byDay: "by day",
+      byMonth: "by month",
+      searchPlaceholder: "Search company, role, notes…",
     },
   },
   fr: {
@@ -128,6 +133,11 @@ export const dictionaries = {
     dashboard: {
       applications: "Candidatures",
       addApplication: "Ajouter une candidature",
+      applicationsOverTime: "Candidatures dans le temps",
+      byHour: "par heure",
+      byDay: "par jour",
+      byMonth: "par mois",
+      searchPlaceholder: "Rechercher entreprise, poste, notes…",
     },
   },
 } as const

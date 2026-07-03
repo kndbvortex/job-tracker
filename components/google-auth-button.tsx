@@ -22,7 +22,10 @@ export function GoogleAuthButton() {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
-        ...(rememberedEmail && { queryParams: { login_hint: rememberedEmail } }),
+        queryParams: {
+          prompt: "select_account",
+          ...(rememberedEmail && { login_hint: rememberedEmail }),
+        },
       },
     })
 

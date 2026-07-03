@@ -64,7 +64,7 @@ export function DashboardSidebar() {
 
   return (
     <>
-      <aside className="hidden w-56 shrink-0 flex-col justify-between border-r border-border p-4 md:flex">
+      <aside className="hidden h-svh w-56 shrink-0 flex-col justify-between border-r border-border p-4 md:flex md:sticky md:top-0">
         <div className="flex flex-col gap-6">
           <Logo />
           <NavLinks />

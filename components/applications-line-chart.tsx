@@ -14,15 +14,9 @@ import {
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { useLocale } from "@/components/locale-provider"
 
 type Granularity = "hour" | "day" | "month"
-
-const chartConfig = {
-  count: {
-    label: "Applications",
-    color: "#2a78d6",
-  },
-} satisfies ChartConfig
 
 function pickGranularity(from: Date, to: Date): Granularity {
   const days = differenceInCalendarDays(to, from)
@@ -56,6 +50,9 @@ function buildBuckets(from: Date, to: Date, granularity: Granularity, dates: Dat
 }
 
 export function ApplicationsLineChart({ dates, from, to }: { dates: Date[]; from: Date; to: Date }) {
+  const { dictionary } = useLocale()
+  const d = dictionary.dashboard
+
   const { data, total, granularity } = useMemo(() => {
     const granularity = pickGranularity(from, to)
     const inRange = dates.filter((d) => d >= from && d <= to)
@@ -66,14 +63,23 @@ export function ApplicationsLineChart({ dates, from, to }: { dates: Date[]; from
     }
   }, [dates, from, to])
 
+  const byLabel = granularity === "hour" ? d.byHour : granularity === "day" ? d.byDay : d.byMonth
+
+  const chartConfig = {
+    count: {
+      label: d.applications,
+      color: "#2a78d6",
+    },
+  } satisfies ChartConfig
+
   return (
     <div className="rounded-2xl border border-border p-6">
       <div className="mb-4 flex items-baseline justify-between">
         <div>
-          <p className="text-sm text-muted-foreground">Applications over time</p>
+          <p className="text-sm text-muted-foreground">{d.applicationsOverTime}</p>
           <p className="text-2xl font-medium">{total}</p>
         </div>
-        <p className="text-xs text-muted-foreground capitalize">by {granularity}</p>
+        <p className="text-xs text-muted-foreground">{byLabel}</p>
       </div>
       <ChartContainer config={chartConfig} className="aspect-auto h-52 w-full">
         <LineChart data={data} margin={{ left: 12, right: 12 }}>

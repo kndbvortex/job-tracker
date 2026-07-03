@@ -1,3 +1,8 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+
 import { applicationStageEnum } from "@/lib/db/schema"
 import { STAGE_LABELS } from "@/components/stage-badge"
 
@@ -15,13 +20,32 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 const GAP = 4
 
 export function DashboardDonutChart({ counts }: { counts: Record<string, number> }) {
+  const [hoveredStage, setHoveredStage] = useState<string | null>(null)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const activeStage = searchParams.get("stage")
+
   const total = Object.values(counts).reduce((sum, n) => sum + n, 0)
 
   const segments = applicationStageEnum.enumValues
     .map((stage) => ({ stage, value: counts[stage] ?? 0 }))
     .filter((segment) => segment.value > 0)
 
+  function handleClick(stage: string) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (activeStage === stage) {
+      params.delete("stage")
+    } else {
+      params.set("stage", stage)
+    }
+    router.push(`/dashboard?${params.toString()}`)
+  }
+
   let cumulative = 0
+
+  const displayStage = (hoveredStage ?? activeStage) as (typeof applicationStageEnum.enumValues)[number] | null
+  const displayValue = displayStage ? (counts[displayStage] ?? 0) : total
+  const displayLabel = displayStage ? STAGE_LABELS[displayStage] : "Total"
 
   return (
     <div
@@ -32,7 +56,13 @@ export function DashboardDonutChart({ counts }: { counts: Record<string, number>
       ].join(" ")}
     >
       <div className="relative shrink-0">
-        <svg width={180} height={180} viewBox="0 0 180 180" className="-rotate-90">
+        <svg
+          width={180}
+          height={180}
+          viewBox="0 0 180 180"
+          className="-rotate-90"
+          style={{ overflow: "visible" }}
+        >
           <circle
             cx={90}
             cy={90}
@@ -46,6 +76,9 @@ export function DashboardDonutChart({ counts }: { counts: Record<string, number>
               const length = Math.max((value / total) * CIRCUMFERENCE - GAP, 0)
               const offset = -cumulative
               cumulative += (value / total) * CIRCUMFERENCE
+              const isHovered = hoveredStage === stage
+              const isActive = activeStage === stage
+              const isDimmed = (hoveredStage !== null && !isHovered) || (activeStage !== null && !isActive && hoveredStage === null)
               return (
                 <circle
                   key={stage}
@@ -53,17 +86,25 @@ export function DashboardDonutChart({ counts }: { counts: Record<string, number>
                   cy={90}
                   r={RADIUS}
                   fill="none"
-                  stroke={STAGE_COLOR_VARS[stage]}
-                  strokeWidth={STROKE}
+                  stroke={STAGE_COLOR_VARS[stage as (typeof applicationStageEnum.enumValues)[number]]}
+                  strokeWidth={isHovered || isActive ? STROKE + 6 : STROKE}
                   strokeDasharray={`${length} ${CIRCUMFERENCE - length}`}
                   strokeDashoffset={offset}
+                  style={{
+                    opacity: isDimmed ? 0.3 : 1,
+                    transition: "all 0.2s ease",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={() => setHoveredStage(stage)}
+                  onMouseLeave={() => setHoveredStage(null)}
+                  onClick={() => handleClick(stage)}
                 />
               )
             })}
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <p className="text-3xl font-medium">{total}</p>
-          <p className="text-xs text-muted-foreground">Applications</p>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center transition-all duration-200">
+          <p className="text-3xl font-medium">{displayValue}</p>
+          <p className="text-xs text-muted-foreground">{displayLabel}</p>
         </div>
       </div>
 
@@ -71,14 +112,33 @@ export function DashboardDonutChart({ counts }: { counts: Record<string, number>
         {applicationStageEnum.enumValues.map((stage) => {
           const value = counts[stage] ?? 0
           const pct = total > 0 ? Math.round((value / total) * 100) : 0
+          const isHovered = hoveredStage === stage
+          const isActive = activeStage === stage
+          const isDimmed = (hoveredStage !== null && !isHovered) || (activeStage !== null && !isActive && hoveredStage === null)
           return (
-            <div key={stage} className="flex items-center justify-between gap-4 text-sm">
+            <div
+              key={stage}
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 text-sm transition-all duration-150"
+              style={{
+                opacity: isDimmed ? 0.35 : 1,
+                backgroundColor: isActive || isHovered ? "var(--muted)" : "transparent",
+                transform: isHovered || isActive ? "translateX(2px)" : "none",
+              }}
+              onMouseEnter={() => setHoveredStage(stage)}
+              onMouseLeave={() => setHoveredStage(null)}
+              onClick={() => handleClick(stage)}
+            >
               <div className="flex items-center gap-2">
                 <span
-                  className="size-2.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: STAGE_COLOR_VARS[stage] }}
+                  className="size-2.5 shrink-0 rounded-full transition-all duration-150"
+                  style={{
+                    backgroundColor: STAGE_COLOR_VARS[stage],
+                    transform: isHovered || isActive ? "scale(1.4)" : "scale(1)",
+                  }}
                 />
-                <span className="text-muted-foreground">{STAGE_LABELS[stage]}</span>
+                <span className={isHovered || isActive ? "text-foreground font-medium" : "text-muted-foreground"}>
+                  {STAGE_LABELS[stage]}
+                </span>
               </div>
               <span className="font-medium">
                 {value} <span className="text-muted-foreground">({pct}%)</span>

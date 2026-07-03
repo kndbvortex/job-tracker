@@ -8,10 +8,12 @@ export function StageFilter({
   activeStage,
   from,
   to,
+  search,
 }: {
   activeStage?: string
   from?: string
   to?: string
+  search?: string
 }) {
   const options = [{ value: undefined, label: "All" }, ...applicationStageEnum.enumValues.map((stage) => ({
     value: stage,
@@ -26,6 +28,7 @@ export function StageFilter({
         if (option.value) params.set("stage", option.value)
         if (from) params.set("from", from)
         if (to) params.set("to", to)
+        if (search) params.set("search", search)
         const query = params.toString()
         const href = query ? `/dashboard?${query}` : "/dashboard"
         return (

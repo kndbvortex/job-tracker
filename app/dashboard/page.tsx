@@ -10,15 +10,16 @@ import { ApplicationsTable, type ApplicationRow } from "@/components/application
 import { Button } from "@/components/ui/button"
 import { DashboardDonutChart } from "@/components/dashboard-donut-chart"
 import { PeriodFilter } from "@/components/period-filter"
+import { SearchInput } from "@/components/search-input"
 import { StageFilter } from "@/components/stage-filter"
 import { getDictionary } from "@/lib/i18n/locale"
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ stage?: string; from?: string; to?: string }>
+  searchParams: Promise<{ stage?: string; from?: string; to?: string; search?: string }>
 }) {
-  const { stage, from, to } = await searchParams
+  const { stage, from, to, search } = await searchParams
   const { dictionary } = await getDictionary()
   const supabase = await createClient()
   const { data } = await supabase.auth.getClaims()
@@ -51,6 +52,15 @@ export default async function DashboardPage({
   if (to) {
     filteredRows = filteredRows.filter((row) => (row.appliedAt ?? row.createdAt) <= toDate)
   }
+  if (search) {
+    const q = search.toLowerCase()
+    filteredRows = filteredRows.filter(
+      (row) =>
+        row.company.toLowerCase().includes(q) ||
+        row.role.toLowerCase().includes(q) ||
+        (row.notes?.toLowerCase().includes(q) ?? false)
+    )
+  }
 
   const rowsWithFiles: ApplicationRow[] = await Promise.all(
     filteredRows.map(async (row) => ({
@@ -78,7 +88,10 @@ export default async function DashboardPage({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <StageFilter activeStage={stage} from={from} to={to} />
+        <div className="flex flex-wrap items-center gap-2">
+          <StageFilter activeStage={stage} from={from} to={to} search={search} />
+          <SearchInput />
+        </div>
         <PeriodFilter from={from} to={to} />
       </div>
 
