@@ -1,21 +1,27 @@
-# shadcn/ui monorepo template
+# job-tracker
 
-This is a Next.js monorepo template with shadcn/ui.
+A Next.js app for tracking job applications, built with shadcn/ui, Drizzle ORM, and Supabase (Postgres + auth).
 
 ## Adding components
 
-To add components to your app, run the following command at the root of your `web` app:
-
 ```bash
-pnpm dlx shadcn@latest add button -c apps/web
+pnpm dlx shadcn@latest add button
 ```
 
-This will place the ui components in the `packages/ui/src/components` directory.
+Components are placed in `components/ui`.
 
 ## Using components
 
-To use the components in your app, import them from the `ui` package.
-
 ```tsx
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "@/components/ui/button"
+```
+
+## Database
+
+`DATABASE_URL` and Supabase keys live in `.env` at the repo root.
+
+```bash
+pnpm db:push      # push the Drizzle schema to Supabase
+pnpm db:generate  # generate a migration
+pnpm db:studio    # open Drizzle Studio
 ```

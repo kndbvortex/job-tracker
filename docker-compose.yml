@@ -1,0 +1,35 @@
+services:
+  job-tracker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
+    container_name: job-tracker
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - TZ=Europe/Paris
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.job-tracker.entrypoints=web"
+      - "traefik.http.routers.job-tracker.rule=Host(`job-tracker.kndbvortex.cloud`)"
+      - "traefik.http.middlewares.job-tracker-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.job-tracker-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.job-tracker.middlewares=job-tracker-https-redirect"
+      - "traefik.http.routers.job-tracker-secure.entrypoints=websecure"
+      - "traefik.http.routers.job-tracker-secure.rule=Host(`job-tracker.kndbvortex.cloud`)"
+      - "traefik.http.routers.job-tracker-secure.tls=true"
+      - "traefik.http.routers.job-tracker-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.job-tracker-secure.service=job-tracker"
+      - "traefik.http.services.job-tracker.loadbalancer.server.port=3000"
+      - "traefik.docker.network=web"
+
+networks:
+  web:
+    external: true
