@@ -35,7 +35,6 @@ export function LandingPage({
 }) {
   const startHref = isAuthenticated ? "/dashboard" : "/auth/login"
   const t = dictionary.landing
-  const nav = dictionary.nav
 
   const exhibits = [
     { ...t.exhibitA, icon: Camera01Icon },
