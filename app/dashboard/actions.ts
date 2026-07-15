@@ -78,6 +78,7 @@ export async function createApplication(_prevState: unknown, formData: FormData)
       jobUrl: jobUrl || null,
       notes: notes || null,
       appliedAt,
+      stage: "applied",
     })
     .returning({ id: applications.id })
 

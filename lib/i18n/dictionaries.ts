@@ -73,6 +73,8 @@ export const dictionaries = {
     dashboard: {
       applications: "Applications",
       addApplication: "Add application",
+      copyPrompt: "Copy prompt",
+      copyPromptCopied: "Copied!",
       applicationsOverTime: "Applications over time",
       byHour: "by hour",
       byDay: "by day",
@@ -151,6 +153,8 @@ export const dictionaries = {
     dashboard: {
       applications: "Candidatures",
       addApplication: "Ajouter une candidature",
+      copyPrompt: "Copier le prompt",
+      copyPromptCopied: "Copié !",
       applicationsOverTime: "Candidatures dans le temps",
       byHour: "par heure",
       byDay: "par jour",
