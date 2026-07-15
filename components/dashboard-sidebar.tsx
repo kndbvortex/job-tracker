@@ -18,7 +18,7 @@ function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2 px-2 transition-opacity hover:opacity-75">
       <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-5 text-[#4AAFFD]" />
-      <span className="text-sm font-semibold tracking-tight">Job Tracker</span>
+      <span className="text-sm font-semibold">Job Tracker</span>
     </Link>
   )
 }

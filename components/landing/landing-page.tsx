@@ -50,7 +50,7 @@ export function LandingPage({
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
           <div className="flex items-center gap-2">
             <HugeiconsIcon icon={Briefcase01Icon} strokeWidth={2} className="size-5 text-[#4AAFFD]" />
-            <span className="text-sm font-semibold tracking-tight">Job Tracker</span>
+            <span className="text-sm font-semibold">Job Tracker</span>
           </div>
           <nav className="flex items-center gap-1.5">
             <ThemeSwitcher />
@@ -70,7 +70,7 @@ export function LandingPage({
           {/* Headline */}
           <motion.h1
             variants={fadeUp}
-            className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl"
+            className="text-4xl font-bold text-slate-900 dark:text-white sm:text-5xl"
           >
             {t.headlineLine1}
             <br />
@@ -140,7 +140,7 @@ export function LandingPage({
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">
               {t.featuresHeadline}
             </h2>
             <p className="mt-3 text-slate-500 dark:text-slate-400">{t.featuresSubhead}</p>
@@ -179,7 +179,7 @@ export function LandingPage({
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">
             {t.ctaHeadline}
           </h2>
           <p className="mt-3 text-slate-400">

@@ -8,7 +8,7 @@ import { ApplicationFormDialog } from "@/components/application-form-dialog"
 import { ApplicationsLineChart } from "@/components/applications-line-chart"
 import { ApplicationsTable, type ApplicationRow } from "@/components/applications-table"
 import { CopyPromptButton } from "@/components/copy-prompt-button"
-import { PrimaryGrowButton } from "@/components/ui/grow-button"
+import { Button } from "@/components/ui/button"
 import { DashboardDonutChart } from "@/components/dashboard-donut-chart"
 import { PeriodFilter } from "@/components/period-filter"
 import { SearchInput } from "@/components/search-input"
@@ -79,13 +79,13 @@ export default async function DashboardPage({
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 p-4 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-lg font-semibold tracking-tight">{dictionary.dashboard.applications}</h1>
+        <h1 className="text-lg font-semibold">{dictionary.dashboard.applications}</h1>
         <div className="flex items-center gap-2">
           <CopyPromptButton
             label={dictionary.dashboard.copyPrompt}
             copiedLabel={dictionary.dashboard.copyPromptCopied}
           />
-          <ApplicationFormDialog trigger={<PrimaryGrowButton>{dictionary.dashboard.addApplication}</PrimaryGrowButton>} />
+          <ApplicationFormDialog trigger={<Button type="button">{dictionary.dashboard.addApplication}</Button>} />
         </div>
       </div>
 
